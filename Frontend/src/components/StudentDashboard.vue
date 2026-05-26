@@ -197,6 +197,7 @@
             </div>
 
             <div class="suggest-reason">💡 {{ s.reason }}</div>
+            <div v-if="s.improvement" class="suggest-improvement">📈 {{ s.improvement }}</div>
 
             <button
               class="btn-apply"
@@ -735,6 +736,7 @@ td { padding: 13px 16px; font-size: 13px; color: #334155; border-top: 1px solid 
 .suggest-score-label { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-top: 3px; }
 .suggest-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: #64748b; margin-bottom: 12px; }
 .suggest-reason { font-size: 13px; color: #475569; background: #f8fafc; border-left: 3px solid #0ea5e9; padding: 10px 14px; border-radius: 0 8px 8px 0; line-height: 1.6; }
+.suggest-improvement { font-size: 13px; color: #475569; background: #f0fdf4; border-left: 3px solid #22c55e; padding: 10px 14px; border-radius: 0 8px 8px 0; line-height: 1.6; margin-top: 8px; }
 
 /* ── Student Report ── */
 .rep-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; margin-bottom: 8px; }

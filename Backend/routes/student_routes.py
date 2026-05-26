@@ -63,6 +63,34 @@ def _required_year(text):
     return int(year_match.group(1)) if year_match else None
 
 
+def _improvement_advice(student, drive, searchable, eligibility, keyword_hits):
+    advice = []
+    student_cgpa = student.cgpa or 0
+    student_year = student.year or 0
+
+    if not keyword_hits:
+        title = (drive.get('job_title') or 'this role').lower()
+        advice.append(
+            f'Add projects, skills, or coursework that clearly match {title} to improve your role fit.'
+        )
+
+    cgpa_needed = _required_cgpa(eligibility)
+    if cgpa_needed is not None and student_cgpa < cgpa_needed:
+        advice.append(f'Raise your CGPA to at least {cgpa_needed:g} to meet the eligibility requirement.')
+
+    year_needed = _required_year(eligibility)
+    if year_needed is not None and student_year != year_needed:
+        advice.append(f'This drive prefers {year_needed} year students, so matching the required year would improve your score.')
+
+    if not student.resume_filename:
+        advice.append('Upload your resume so the system can count your profile as more complete.')
+
+    if not advice:
+        advice.append('Strengthen your resume with role-specific projects, internships, and skills to push this match higher.')
+
+    return 'To improve your match: ' + ' '.join(advice[:2])
+
+
 def _local_suggestions(student, drives_list):
     student_keywords = _student_department_keywords(student.department)
     student_location = (student.location or '').lower()
@@ -125,6 +153,7 @@ def _local_suggestions(student, drives_list):
             'company': drive.get('company') or 'Unknown',
             'match_score': score,
             'reason': 'Recommended because ' + ', '.join(reasons[:3]) + '.',
+            'improvement': _improvement_advice(student, drive, searchable, eligibility, keyword_hits),
             'salary': drive.get('salary', ''),
             'location': drive.get('location', ''),
             'eligibility': drive.get('eligibility', ''),
@@ -316,6 +345,7 @@ def get_suggestions(user_id):
 
     prompt = f"""You are a placement assistant. Given a student's profile and a list of job drives, 
 rank the TOP 3 most suitable drives for the student and explain why each is a good match.
+Also include one short, practical improvement tip that would help the student increase the match percentage.
 
 Student Profile:
 - Name: {profile['name']}
@@ -333,7 +363,8 @@ Respond ONLY with a valid JSON array (no markdown, no extra text) of exactly up 
     "job_title": "<string>",
     "company": "<string>",
     "match_score": <integer 1-100>,
-    "reason": "<1-2 sentence explanation of why this matches the student>"
+    "reason": "<1-2 sentence explanation of why this matches the student>",
+    "improvement": "<one short sentence starting with To improve your match: >"
   }}
 ]"""
 
@@ -386,6 +417,17 @@ Respond ONLY with a valid JSON array (no markdown, no extra text) of exactly up 
             s['location']    = d.get('location', '')
             s['eligibility'] = d.get('eligibility', '')
             s['deadline']    = d.get('deadline', '')
+            if not s.get('improvement'):
+                searchable = _lower_text(
+                    d.get('job_title'),
+                    d.get('company'),
+                    d.get('description'),
+                    d.get('eligibility'),
+                    d.get('location'),
+                )
+                eligibility = (d.get('eligibility') or '').lower()
+                keyword_hits = [kw for kw in _student_department_keywords(student.department) if kw and kw in searchable]
+                s['improvement'] = _improvement_advice(student, d, searchable, eligibility, keyword_hits)
 
         return jsonify(suggestions), 200
 
