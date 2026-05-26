@@ -1,76 +1,115 @@
 # Placement Portal
 
-A full-stack placement portal web application for managing students, companies, job postings, applications, and admin workflows.
+A full-stack Placement Portal built with **Flask (Backend)** and **Vite + React (Frontend)**.
 
-## Features
+---
 
-- Student registration and login
-- Company registration and login
-- Admin dashboard
-- Job posting management
-- Student application tracking
-- Resume upload support
-- Role-based authentication
-- Flask backend API
-- Vue.js frontend interface
-
-## Tech Stack
-
-### Frontend
-- Vue.js
-- Vue Router
-- Axios
-- Vite
+## 🚀 Tech Stack
 
 ### Backend
-- Flask
-- Flask-SQLAlchemy
-- Flask-CORS
-- JWT Authentication
-- SQLite
-- Flask-Mail
-- Flask-Caching
-- Flask-Limiter
 
-## Project Structure
+* Flask
+* SQLAlchemy
+* Flask-JWT-Extended
+* Flask-CORS
+* Flask-Limiter
+
+### Frontend
+
+* React
+* Vite
+* Axios
+* React Router DOM
+
+---
+
+# 📁 Project Structure
+
+```bash
 Placement-Portal/
+│
 ├── Backend/
 │   ├── app.py
 │   ├── models.py
 │   ├── database.py
 │   ├── config.py
 │   ├── requirements.txt
+│   │
 │   ├── controllers/
 │   └── routes/
+│
 ├── Frontend/
 │   ├── src/
 │   ├── package.json
-│   └── vite.config.js
-└── .gitignore
+│   ├── vite.config.js
+│   └── .gitignore
+│
+└── README.md
+```
 
+---
 
-Setup Instructions
+# ⚙️ Setup Instructions
 
-Backend Setup
+## 1️⃣ Backend Setup
+
+Open a terminal and run:
+
+```bash
 cd Backend
-python -m venv ../.venv
-source ../.venv/bin/activate
+
+python -m venv ../venv
+
+# Activate virtual environment
+# Windows
+..\venv\Scripts\activate
+
+# macOS/Linux
+source ../venv/bin/activate
+
 pip install -r requirements.txt
+
 python app.py
+```
 
-The backend will run at:
+### Backend Server
+
+The backend will start at:
+
+```bash
 http://127.0.0.1:5000
+```
 
-Frontend Setup
-Open a new terminal:
+---
+
+## 2️⃣ Frontend Setup
+
+Open a new terminal and run:
+
+```bash
 cd Frontend
+
 npm install
 npm run dev
+```
 
-The frontend will run at:
+### Frontend Server
+
+The frontend will start at:
+
+```bash
 http://localhost:5173
+```
 
-Default Admin Login
+---
+
+# 🔐 Default Admin Credentials
+
+```txt
 Username: admin
 Password: admin@123
+```
+
+---
+
 
