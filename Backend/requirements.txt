@@ -13,7 +13,7 @@ flask-mail
 python-dotenv
 PyJWT
 reportlab
-
+requests
 
 
 # pip install -r requirements.txt - for backend 
